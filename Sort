@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<stdlib.h>
+MAX_HEAPIFY(int *a, int i, int size)
+{
+  int l, r, largest, temp;
+  l = 2*i;
+  r = 2*i+1;
+  if ((l <= size)&&(a[l] > a[i]))
+    largest = l; 
+  else 
+    largest = i;
+  if((r <= size)&&(a[r] > a[largest]))
+    largest = r;
+  if(largest != i)
+  {
+    temp = a[i];
+    a[i] = a[largest];
+    a[largest] = temp;
+    MAX_HEAPIFY(a, largest, size);
+  }
+}
+
+BUILD_MAX_HEAP(int *a, int size)
+{
+  int i;
+  for(i = size/2; i > 0; i--)
+    MAX_HEAPIFY(a, i, size);
+}
+
+HEAPSORT(int *a, int size)
+{
+  int *sortedarray,root,actualsize,i, s = 0, j, temp;
+  sortedarray=(int*)malloc(size*sizeof(int));
+  actualsize=size;
+  BUILD_MAX_HEAP(a, size); 
+  
+  for(i = size; i > 0; i--)
+  { 
+     sortedarray[++s] = a[1];
+     root = a[1];
+
+    temp = a[1];
+    a[1] = a[i];
+    a[i] = temp;
+    
+    size--;
+    
+    MAX_HEAPIFY(a, 1, size);
+  }
+
+  printf("\nSorted array\n");
+  for(i = actualsize; i > 0; i--)
+    printf("%d ", sortedarray[i]);
+}
+
+int main()
+{ 
+  int *a,n,i;
+  printf("Enter size of the array: ");
+  scanf("%d",&n);
+  a=(int*)malloc(n*sizeof(int));
+  printf("Enter the array elements: ");
+  for(i=0;i<n;i++)
+   scanf("%d",a+i);
+  printf("The original array : ");
+  for(i=0;i<n;i++)
+   printf("%d ",*(a+i));
+  HEAPSORT(a, n);
+  return 0;
+}
